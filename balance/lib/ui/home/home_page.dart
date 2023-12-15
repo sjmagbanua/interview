@@ -22,34 +22,39 @@ class _HomePageState extends State<HomePage> {
           stream: _groupsDao.watch(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Text("Loading...");
+              return const Text("Loading...");
             }
             return Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Row(children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        _groupsDao.insert(_controller.text);
-                        _controller.text = "";
-                      },
-                      child: Text("Create")),
-                ]),
+                    TextButton(
+                        onPressed: () {
+                          _groupsDao.insert(_controller.text);
+                          _controller.text = "";
+                        },
+                        child: const Text("Create")),
+                  ],
+                ),
                 Expanded(
                   child: ListView.builder(
-                      itemCount: snapshot.requireData.length,
-                      itemBuilder: (context, index) => ListTile(
-                            title: Text(snapshot.requireData[index].name),
-                            subtitle: Text(snapshot.requireData[index].balance.toString()),
-                            onTap: () {
-                              GoRouterHelper(context).push("/groups/${snapshot.requireData[index].id}");
-                            },
-                          )),
+                    itemCount: snapshot.requireData.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(snapshot.requireData[index].name),
+                      subtitle:
+                          Text(snapshot.requireData[index].balance.toString()),
+                      onTap: () {
+                        GoRouterHelper(context)
+                            .push("/groups/${snapshot.requireData[index].id}");
+                      },
+                    ),
+                  ),
                 ),
               ],
             );
